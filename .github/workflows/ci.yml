@@ -46,7 +46,6 @@ jobs:
             .pio/build/esp32dev/firmware.bin
           draft: False
           prerelease: False
-          name: Basic-GitHub-Actions-Create-Release-v${{ steps.vars.outputs.version }}
           generate_release_notes: True
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
