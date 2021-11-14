@@ -17,7 +17,7 @@ jobs:
       matrix:
         python-version: [3.7]
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
         with:
@@ -33,7 +33,8 @@ jobs:
       - name: Build test version ${{ steps.vars.outputs.version }}
         run: |
           pio run
-      - uses: actions/upload-artifact@v2
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
         with:
           name: Basic-GitHub-Actions-Create-Release-v${{ steps.vars.outputs.version }}
           path: .pio/build/esp32dev/firmware.bin
