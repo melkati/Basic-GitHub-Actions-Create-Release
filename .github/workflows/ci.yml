@@ -35,5 +35,5 @@ jobs:
           pio run
       - uses: actions/upload-artifact@v2
         with:
-          name: Basic-GitHub-Actions-Create-Release
+          name: Basic-GitHub-Actions-Create-Release-v${{ steps.vars.outputs.version }}
           path: .pio/build/esp32dev/firmware.bin
