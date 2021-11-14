@@ -27,7 +27,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -U platformio
           platformio update
-      - name: Build test
+      - name: Get version
+        id: vars
+        run: echo ::set-output name=version::$(cat version)
+      - name: Build test version ${{ steps.vars.outputs.version }}
         run: |
           pio run
       - uses: actions/upload-artifact@v2
