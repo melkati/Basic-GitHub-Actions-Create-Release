@@ -33,6 +33,7 @@ jobs:
             name: Basic-GitHub-Actions-Create-Release-v${{ steps.get_version.outputs.VERSION }}
             path: .pio/build/esp32dev/*.bin
         - name: Create Release
+          id: create_release
           uses: softprops/action-gh-release@v1
           if: startsWith(github.ref, 'refs/tags/')
           with:
@@ -41,4 +42,14 @@ jobs:
             draft: true
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_ACTION_TOKEN }}
+        - name: Upload Release Asset
+          id: upload-release-asset
+          uses: actions/upload-release-asset@v1.0.1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: .pio/build/esp32dev/*.bin
+            asset_name: Basic-GitHub-Actions-Create-Release-v${{ steps.get_version.outputs.VERSION }}.bin
+            asset_content_type: application/octet-stream
 
