@@ -22,13 +22,15 @@ jobs:
         - name: Get the version
           id: get_version
           run: echo ::set-output name=VERSION::$(cat version)
+        - name: Show version
+          run: echo ${{ steps.get_version.outputs.VERSION }}
         - name: Build test version
           run: |
             pio run
         - name: Upload artifacts
           uses: actions/upload-artifact@v2
           with:
-            name: Basic-GitHub-Actions-Create-Release-v${{ steps.vars.outputs.version }}
+            name: Basic-GitHub-Actions-Create-Release-v${{ steps.get_version.outputs.VERSION }}
             path: .pio/build/esp32dev/firmware.bin
         - name: Create Release
           uses: softprops/action-gh-release@v1
