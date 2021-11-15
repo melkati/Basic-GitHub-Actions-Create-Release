@@ -43,7 +43,6 @@ jobs:
             echo "      }" >> file.txt
             echo "  ]" >> file.txt
             echo "}" >> file.txt
-            run echo file.txt
             echo "::set-output name=manifiest::$(cat file.txt)"
         - name: Read manifiest file
           id: readmanifiest
