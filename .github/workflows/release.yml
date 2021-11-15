@@ -44,25 +44,31 @@ jobs:
             echo "  ]" >> file.txt
             echo "}" >> file.txt
             echo "::set-output name=manifiest::$(cat file.txt)"
-        - name: Read manifiest file
+        - name: Read manifiest file with cat
+          run:  |
+            echo "Manifiest file contents readed with cat:"
+            cat file.txt
+          - name: Read manifiest file
           id: readmanifiest
-          run: echo ${{ steps.createmanifiest.outputs.manifiest }}
+          run:  |
+            echo "Manifiest file contents from variable:"
+            echo ${{ steps.createmanifiest.outputs.manifiest }}
         - name: Upload artifacts
           uses: actions/upload-artifact@v2
           with:
-            name: Basic-GitHub-Actions-Create-Release-v${{ steps.get_version.outputs.VERSION }}
+            name: ${{ github.event.repository.name }}-v${{ steps.get_version.outputs.VERSION }}
             path: .pio/build/esp32dev/*.bin
         - name: Rename bin file
           if: startsWith(github.ref, 'refs/tags/')
           run: |
-            mv .pio/build/esp32dev/firmware.bin .pio/build/esp32dev/Basic-GitHub-Actions-Create-Release.bin
-            mv .pio/build/esp32dev/partitions.bin .pio/build/esp32dev/Basic-GitHub-Actions-Create-Release-partitions.bin
+            mv .pio/build/esp32dev/firmware.bin .pio/build/esp32dev/${{ github.event.repository.name }}.bin
+            mv .pio/build/esp32dev/partitions.bin .pio/build/esp32dev/${{ github.event.repository.name }}-partitions.bin
         - name: Create Release
           id: create_release
           uses: softprops/action-gh-release@v1
           if: startsWith(github.ref, 'refs/tags/')
           with:
-            name: Basic-GitHub-Actions-Create-Release-v${{ steps.get_version.outputs.VERSION }}
+            name: ${{ github.event.repository.name }}-v${{ steps.get_version.outputs.VERSION }}
             files: .pio/build/esp32dev/*.bin            
             draft: true
           env:
