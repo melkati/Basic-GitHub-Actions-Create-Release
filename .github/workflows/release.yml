@@ -27,6 +27,22 @@ jobs:
         - name: Build test version
           run: |
             pio run
+        - name: Create manifiest
+          run: |
+            echo "{" > file.txt
+            echo "  \"name\": \"${{ github.event.repository.name }}\"," >> file.txt
+            echo "  \"new_install_skip_erase": false,\" >> file.txt
+            echo "  \"builds": [\" >> file.txt
+            echo "      {" >> file.txt
+            echo "        \"chipFamily\": \"ESP32\"," >> file.txt
+            echo "        \"improv\": false," >> file.txt
+            echo "        \"parts\": [" >> file.txt
+            echo "          { \"path\": \"${{ github.event.repository.name }}.bin\", \"offset\": 65536 }" >> file.txt
+            echo "        ]" >> file.txt
+            echo "      }" >> file.txt
+            echo "  ]" >> file.txt
+            echo "}" >> file.txt
+            run echo file.txt
         - name: Upload artifacts
           uses: actions/upload-artifact@v2
           with:
@@ -35,8 +51,8 @@ jobs:
         - name: Rename bin file
           if: startsWith(github.ref, 'refs/tags/')
           run: |
-            mv .pio/build/esp32dev/firmware.bin .pio/build/esp32dev/Basic-GitHub-Actions-Create-Release-v${{ steps.get_version.outputs.VERSION }}.bin
-            mv .pio/build/esp32dev/partitions.bin .pio/build/esp32dev/Basic-GitHub-Actions-Create-Release-v${{ steps.get_version.outputs.VERSION }}-partitions.bin
+            mv .pio/build/esp32dev/firmware.bin .pio/build/esp32dev/Basic-GitHub-Actions-Create-Release.bin
+            mv .pio/build/esp32dev/partitions.bin .pio/build/esp32dev/Basic-GitHub-Actions-Create-Release-partitions.bin
         - name: Create Release
           id: create_release
           uses: softprops/action-gh-release@v1
