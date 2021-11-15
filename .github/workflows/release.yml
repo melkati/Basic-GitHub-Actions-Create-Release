@@ -48,7 +48,7 @@ jobs:
           run:  |
             echo "Manifiest file contents readed with cat:"
             cat file.txt
-          - name: Read manifiest file
+        - name: Read manifiest file
           id: readmanifiest
           run:  |
             echo "Manifiest file contents from variable:"
