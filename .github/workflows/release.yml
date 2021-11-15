@@ -27,7 +27,8 @@ jobs:
         - name: Build test version
           run: |
             pio run
-        - name: Create manifiest
+        - name: Create manifiest file
+          id: createmanifiest
           run: |
             echo "{" > file.txt
             echo "  \"name\": \"${{ github.event.repository.name }}\"," >> file.txt
@@ -43,6 +44,10 @@ jobs:
             echo "  ]" >> file.txt
             echo "}" >> file.txt
             run echo file.txt
+            echo "::set-output name=manifiest::$(cat file.txt)"
+        - name: Read manifiest file
+          id: readmanifiest
+          run: echo ${{ steps.createmanifiest.outputs.manifiest }}
         - name: Upload artifacts
           uses: actions/upload-artifact@v2
           with:
