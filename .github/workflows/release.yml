@@ -44,7 +44,7 @@ jobs:
             echo "  ]" >> file.txt
             echo "}" >> file.txt
             echo "::set-output name=manifiest::$(cat file.txt)"
-        - name: Read manifiest file with cat
+        - name: Read manifiest file with cat 
           run:  |
             echo "Manifiest file contents readed with cat:"
             cat file.txt
